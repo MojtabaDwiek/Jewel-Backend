@@ -27,4 +27,9 @@ class Customers extends Authenticatable
     {
         return $this->hasMany(Cart::class, 'customer_id');
     }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'user');
+    }
 }

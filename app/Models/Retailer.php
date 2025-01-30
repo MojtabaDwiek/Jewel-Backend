@@ -28,4 +28,9 @@ class Retailer extends Authenticatable
     {
         return $this->hasMany(Cart::class, 'retailer_id');
     }
+
+    public function favorites()
+    {
+        return $this->morphMany(Favorite::class, 'user');
+    }
 }
