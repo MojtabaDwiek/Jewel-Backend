@@ -20,7 +20,8 @@ class Products extends Model
         'sizes',
         'lengths',
         'weight',
-        'image',
+        'images', // Updated to reflect 'images' instead of 'image'
+        'carat', // Added carat to fillable
         'category', // Added category to fillable
     ];
 
@@ -32,6 +33,7 @@ class Products extends Model
     protected $casts = [
         'sizes' => 'array', // Cast the 'sizes' JSON column to an array
         'lengths' => 'array', // Cast the 'lengths' JSON column to an array
+        'images' => 'array', // Cast the 'images' JSON column to an array
     ];
 
     /**
@@ -44,16 +46,16 @@ class Products extends Model
     ];
 
     /**
-     * Get the full URL for the product image.
+     * Get the full URL for the product images.
      *
-     * @return string
+     * @return array
      */
-    public function getImageUrlAttribute()
+    public function getImagesUrlsAttribute()
     {
-        if ($this->image) {
-            return asset('storage/' . $this->image); // Assumes images are stored in the public disk
-        }
-        return null;
+        // Return the full URL for each image in the 'images' array
+        return collect($this->images)->map(function ($image) {
+            return asset('storage/' . $image); // Assumes images are stored in the public disk
+        })->toArray();
     }
 
     /**

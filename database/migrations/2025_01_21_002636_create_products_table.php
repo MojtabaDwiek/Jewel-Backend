@@ -17,8 +17,9 @@ return new class extends Migration
             $table->json('sizes')->nullable(); // Store multiple sizes as JSON
             $table->json('lengths')->nullable(); // Store multiple lengths as JSON
             $table->string('weight')->default('0 kg'); // Default weight
-            $table->string('image', 255); // Limit image path length
-            $table->string('category')->nullable()->index(); // Add category column with index
+            $table->json('images'); // Change to store multiple images as JSON and make it not nullable
+            $table->enum('carat', ['18', '21'])->nullable(); // Carat selection (18 or 21) as enum
+            $table->string('category')->nullable()->index(); // Category with index
             $table->timestamps();
             $table->softDeletes(); // Enable soft deletes
         });
