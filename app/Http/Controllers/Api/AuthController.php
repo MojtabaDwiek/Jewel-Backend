@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -24,6 +25,8 @@ class AuthController extends Controller
                 'message' => 'Customer login successful',
                 'user' => $customer,
                 'token' => $token,
+                'customer_id' => $customer->id, // Include customer_id
+                'retailer_id' => null, // No retailer_id for customers
             ]);
         }
 
@@ -35,6 +38,8 @@ class AuthController extends Controller
                 'message' => 'Retailer login successful',
                 'user' => $retailer,
                 'token' => $token,
+                'retailer_id' => $retailer->id, // Include retailer_id
+                'customer_id' => null, // No customer_id for retailers
             ]);
         }
 
