@@ -52,15 +52,5 @@ class User extends Authenticatable implements FilamentUser // Implement Filament
      *
      * @return bool
      */
-    public function canAccessFilament(): bool
-    {
-        // Example: Allow access if the user has an 'admin' role
-        // return $this->hasRole('admin');
-
-        // Or, allow access if the user has a specific email
-        // return in_array($this->email, ['admin@example.com']);
-
-        // Or, allow all authenticated users to access Filament
-        return true;
-    }
+    
 }
