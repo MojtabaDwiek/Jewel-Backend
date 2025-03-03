@@ -3,11 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser; // Add this import
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser // Implement FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -44,5 +45,22 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Determine if the user can access the Filament admin panel.
+     *
+     * @return bool
+     */
+    public function canAccessFilament(): bool
+    {
+        // Example: Allow access if the user has an 'admin' role
+        // return $this->hasRole('admin');
+
+        // Or, allow access if the user has a specific email
+        // return in_array($this->email, ['admin@example.com']);
+
+        // Or, allow all authenticated users to access Filament
+        return true;
     }
 }
