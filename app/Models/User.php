@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser; // Add this import
+use Filament\Panel; // Add this import
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,9 +51,10 @@ class User extends Authenticatable implements FilamentUser // Implement Filament
     /**
      * Determine if the user can access the Filament admin panel.
      *
+     * @param Panel $panel
      * @return bool
      */
-    public function canAccessPanel(): bool // Correct method name for Filament v3
+    public function canAccessPanel(Panel $panel): bool // Add the $panel parameter
     {
         // Example: Allow access if the user has an 'admin' role
         // return $this->hasRole('admin');
