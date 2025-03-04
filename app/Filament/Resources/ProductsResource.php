@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsResource extends Resource
 {
@@ -21,27 +22,18 @@ class ProductsResource extends Resource
     {
         return $form
             ->schema([
-                // Product Name
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-
-                // Sizes (nullable JSON)
                 Forms\Components\Textarea::make('sizes')
-                    ->nullable() // Allow null
-                    ->json(), // Allow JSON input for sizes
-
-                // Lengths (nullable JSON)
+                    ->nullable()
+                    ->json(),
                 Forms\Components\Textarea::make('lengths')
-                    ->nullable() // Allow null
-                    ->json(), // Allow JSON input for lengths
-
-                // Weight
+                    ->nullable()
+                    ->json(),
                 Forms\Components\TextInput::make('weight')
                     ->required()
                     ->maxLength(255),
-
-                // Carat Selection (18 or 21)
                 Forms\Components\Select::make('carat')
                     ->options([
                         '18' => '18 Carat',
@@ -49,17 +41,13 @@ class ProductsResource extends Resource
                     ])
                     ->required()
                     ->placeholder('Select Carat'),
-
-                // Multiple Photos Upload
-                Forms\Components\FileUpload::make('images') // Use 'images' to store multiple photos
-                    ->multiple() // Allow multiple files
+                Forms\Components\FileUpload::make('images')
+                    ->multiple()
                     ->image()
                     ->directory('products')
                     ->disk('public')
-                    ->maxSize(20480) // 20MB in KB
-                    ->rules(['image', 'max:20480']), // Validate image size
-
-                // Category Selection
+                    ->maxSize(20480)
+                    ->rules(['image', 'max:20480']),
                 Forms\Components\Select::make('category')
                     ->options([
                         'كسر شفت' => 'كسر شفت',
@@ -92,14 +80,21 @@ class ProductsResource extends Resource
                 Tables\Columns\TextColumn::make('weight')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('carat') // Display Carat
+                Tables\Columns\TextColumn::make('carat')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('images') // Display multiple images
-                    ->disk('public')
-                    ->stacked() // Stack images vertically
-                    ->limit(3) // Limit the number of images displayed
-                    ->circular(), // Optional: Display images in a circular format
+                Tables\Columns\Column::make('images')
+                    ->label('Images')
+                    ->formatStateUsing(function ($state) {
+                        $images = json_decode($state, true);
+                        $html = '';
+                        foreach ($images as $image) {
+                            $url = Storage::disk('public')->url($image);
+                            $html .= "<img src='$url' alt='Image' style='width: 50px; height: 50px; margin-right: 5px;'>";
+                        }
+                        return $html;
+                    })
+                    ->html(),
                 Tables\Columns\TextColumn::make('category')
                     ->searchable()
                     ->sortable(),
