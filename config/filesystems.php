@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'public'),  // Set default to 'public'
+    'default' => env('FILESYSTEM_DISK', 'jewel'),  // Set default to 'public'
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
             'throw' => false,
         ],
 
-        'public' => [
+        'jewel' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
