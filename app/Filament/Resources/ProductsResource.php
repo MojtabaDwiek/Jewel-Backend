@@ -83,7 +83,7 @@ class ProductsResource extends Resource
                 Tables\Columns\TextColumn::make('carat')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\Column::make('images')
+                Tables\Columns\TextColumn::make('images')
                     ->label('Images')
                     ->formatStateUsing(function ($state) {
                         $images = json_decode($state, true);
