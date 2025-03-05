@@ -54,8 +54,8 @@ class ProductsResource extends Resource
                 Forms\Components\FileUpload::make('images') // Use 'images' to store multiple photos
                     ->multiple() // Allow multiple files
                     ->image()
-                    ->directory('products')
-                    ->disk('public')
+                    ->directory('products') // Store files in the 'products' directory
+                    ->disk('jewel') // Use the 'jewel' disk
                     ->maxSize(20480) // 20MB in KB
                     ->rules(['image', 'max:20480']), // Validate image size
 
@@ -96,7 +96,10 @@ class ProductsResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('images') // Display multiple images
-                    ->disk('public')
+                    ->disk('jewel') // Use the 'jewel' disk
+                    ->getStateUsing(function ($record) {
+                        return $record->images ? $record->images[0] : null; // Display the first image
+                    })
                     ->stacked() // Stack images vertically
                     ->limit(3) // Limit the number of images displayed
                     ->circular(), // Optional: Display images in a circular format
